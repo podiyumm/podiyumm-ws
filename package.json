@@ -1,0 +1,26 @@
+{
+  "name": "podiyumm-ws",
+  "version": "0.1.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/podiyumm/podiyumm-ws.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/podiyumm/podiyumm-ws/issues"
+  },
+  "homepage": "https://github.com/podiyumm/podiyumm-ws#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "redis": "^3.1.2",
+    "ws": "^8.2.0"
+  }
+}
