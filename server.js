@@ -24,7 +24,9 @@ var redisClient = redis.createClient(
 redisClient.subscribe(REDIS_CHANNEL);
 
 // Create & Start the WebSocket server
-const server = new WebSocket.Server({ port : WEB_SOCKET_PORT });
+const server = new WebSocket.Server({
+    host : '0.0.0.0',
+    port : WEB_SOCKET_PORT });
 
 // Register event for client connection
 server.on('connection', function connection(ws) {
@@ -45,4 +47,4 @@ server.on('slideActivated', data => {
     });
 });
 
-console.log("WebSocket server started at ws://locahost:"+ WEB_SOCKET_PORT);
+console.log("WebSocket server started at ws://0.0.0.0:"+ WEB_SOCKET_PORT);
