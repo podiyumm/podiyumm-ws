@@ -4,13 +4,21 @@ const WebSocket = require('ws');
 const redis = require('redis');
 
 // Configuration: adapt to your environment
-const REDIS_SERVER = process.env.REDIS_SERVER;
+const REDIS_HOST = process.env.REDIS_HOST;
+const REDIS_PORT = parseInt(process.env.REDIS_PORT);
+const REDIS_PWD = process.env.REDIS_PWD;
 const WEB_SOCKET_PORT = parseInt(process.env.WEB_SOCKET_PORT);
 
 const REDIS_CHANNEL='podiyumm:notifications'
 
 // Connect to Redis and subscribe to "app:notifications" channel
-var redisClient = redis.createClient(REDIS_SERVER);
+var redisClient = redis.createClient(
+    {
+        host: REDIS_HOST,
+        port: REDIS_PORT,
+        password: REDIS_PWD
+    }
+);
 // TODO scaling (channel per slideshow)? if so, do we spawn server.on per slideshow?
 // https://stackoverflow.com/questions/6965451/redis-key-naming-conventions
 redisClient.subscribe(REDIS_CHANNEL);
