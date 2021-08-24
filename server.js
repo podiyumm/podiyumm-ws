@@ -1,9 +1,11 @@
+require('dotenv').config()
+
 const WebSocket = require('ws');
 const redis = require('redis');
 
 // Configuration: adapt to your environment
 const REDIS_SERVER = process.env.REDIS_SERVER;
-const WEB_SOCKET_PORT = process.env.WEB_SOCKET_PORT;
+const WEB_SOCKET_PORT = parseInt(process.env.WEB_SOCKET_PORT);
 
 const REDIS_CHANNEL='podiyumm:notifications'
 
