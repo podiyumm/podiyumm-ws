@@ -1,6 +1,5 @@
 require('dotenv').config()
 
-const WebSocket = require('ws');
 const redis = require('redis');
 
 // Configuration: adapt to your environment
@@ -10,6 +9,10 @@ const REDIS_PWD = process.env.REDIS_PWD;
 const WEB_SOCKET_PORT = parseInt(process.env.WEB_SOCKET_PORT);
 
 const REDIS_CHANNEL='podiyumm:notifications'
+const
+    io = require("socket.io"),
+    server = io.listen(parseInt(WEB_SOCKET_PORT));
+
 
 // Connect to Redis and subscribe to "app:notifications" channel
 var redisClient = redis.createClient(
@@ -23,20 +26,20 @@ var redisClient = redis.createClient(
 // https://stackoverflow.com/questions/6965451/redis-key-naming-conventions
 redisClient.subscribe(REDIS_CHANNEL);
 
-// Create & Start the WebSocket server
-const server = new WebSocket.Server({
-    host : '0.0.0.0',
-    port : WEB_SOCKET_PORT });
+// event fired every time a new client connects:
+server.on("connection", (socket) => {
+    console.info(`Client connected [id=${socket.id}]`);
 
-// Register event for client connection
-server.on('connection', function connection(ws) {
+    // when socket disconnects, remove it from the list:
+    socket.on("disconnect", () => {
+        console.info(`Client gone [id=${socket.id}]`);
+    });
 
     // broadcast on web socket when receving a Redis PUB/SUB Event
     redisClient.on('message', function(channel, message){
         console.log(message);
-        ws.send(message);
+        socket.emit("text", message);
     })
-
 });
 
 server.on('slideActivated', data => {
@@ -46,5 +49,3 @@ server.on('slideActivated', data => {
         // process.exit(0);
     });
 });
-
-console.log("WebSocket server started at ws://0.0.0.0:"+ WEB_SOCKET_PORT);
